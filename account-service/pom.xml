@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>account-service</name>
     <description>Account Service for Nova Bank Project</description>
+    <packaging>jar</packaging>
     <url/>
     <licenses>
         <license/>
@@ -117,12 +118,12 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <excludes>
+
                         <exclude>
-                            <exclude>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok</artifactId>
-                            </exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
                         </exclude>
+
                     </excludes>
                 </configuration>
             </plugin>
