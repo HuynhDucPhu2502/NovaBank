@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>loan-service</name>
     <description>Card Service for Nova Bank Project</description>
+    <packaging>jar</packaging>
     <url/>
     <licenses>
         <license/>
@@ -116,6 +117,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <image>huynhducphu2502/${project.artifactId}</image>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
