@@ -1,0 +1,38 @@
+services:
+  account-service:
+    image: "huynhducphu2502/account-service"
+    container_name: account-ms
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - novabank-net
+  card-service:
+    image: "huynhducphu2502/card-service"
+    container_name: card-ms
+    ports:
+      - "7070:7070"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - novabank-net
+  loan-service:
+    image: "huynhducphu2502/loan-service"
+    container_name: loan-ms
+    ports:
+      - "9090:9090"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - novabank-net
+
+networks:
+  novabank-net:
+    driver: "bridge"
