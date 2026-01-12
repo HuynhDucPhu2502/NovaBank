@@ -1,4 +1,43 @@
 services:
+
+  # ================================================================================
+  #  DATABASE
+  # ================================================================================
+
+  account-db:
+    container_name: account-db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: accountdb
+    extends:
+      file: common-config.yml
+      service: common-db-config
+
+  card-db:
+    container_name: card-db
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: carddb
+    extends:
+      file: common-config.yml
+      service: common-db-config
+
+  loan-db:
+    container_name: loan-db
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: loandb
+    extends:
+      file: common-config.yml
+      service: common-db-config
+
+  # ================================================================================
+  #  RABBIT MQ
+  # ================================================================================
+
   rabbit:
     image: rabbitmq:4-management
     hostname: rabbitmq
@@ -14,6 +53,10 @@ services:
     extends:
       file: common-config.yml
       service: network-deploy-service
+
+  # ================================================================================
+  #  CONFIG SERVER
+  # ================================================================================
 
   config-server:
     image: huynhducphu2502/config-server
@@ -33,6 +76,10 @@ services:
       file: common-config.yml
       service: microservice-base-config
 
+  # ================================================================================
+  #  SERVICES
+  # ================================================================================
+
   account-service:
     image: huynhducphu2502/account-service
     container_name: account-ms
@@ -41,11 +88,14 @@ services:
     depends_on:
       config-server:
         condition: service_healthy
+      account-db:
+        condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: account-service
+      SPRING_DATASOURCE_URL: jdbc:postgresql://account-db:5432/accountdb
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-config-client
 
   card-service:
     image: huynhducphu2502/card-service
@@ -55,11 +105,14 @@ services:
     depends_on:
       config-server:
         condition: service_healthy
+      card-db:
+        condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: card-service
+      SPRING_DATASOURCE_URL: jdbc:postgresql://card-db:5432/carddb
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-config-client
 
   loan-service:
     image: huynhducphu2502/loan-service
@@ -69,11 +122,14 @@ services:
     depends_on:
       config-server:
         condition: service_healthy
+      loan-db:
+        condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: loan-service
+      SPRING_DATASOURCE_URL: jdbc:postgresql://loan-db:5432/loandb
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-config-client
 
 networks:
   novabank-net:

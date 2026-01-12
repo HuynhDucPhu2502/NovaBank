@@ -3,20 +3,40 @@ services:
     networks:
       - novabank-net
 
-  microservice-base-config:
+  common-db-config:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    deploy:
+      resources:
+        limits:
+          memory: 300m
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     extends:
       service: network-deploy-service
+
+  microservice-base-config:
+    environment:
+      SPRING_RABBITMQ_HOST: rabbit
     deploy:
       resources:
         limits:
           memory: 700m
-    environment:
-      SPRING_PROFILES_ACTIVE: default
-      SPRING_RABBITMQ_HOST: rabbit
+    extends:
+      service: network-deploy-service
 
-  microservice-configserver-config:
+  microservice-config-client:
+    environment:
+      SPRING_CONFIG_IMPORT: configserver:http://config-server:8701/
+    deploy:
+      resources:
+        limits:
+          memory: 512m
     extends:
       service: microservice-base-config
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-      SPRING_CONFIG_IMPORT: configserver:http://config-server:8701/
