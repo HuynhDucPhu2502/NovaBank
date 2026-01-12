@@ -33,7 +33,7 @@ services:
 
   microservice-config-client:
     environment:
-      SPRING_CONFIG_IMPORT: configserver:http://config-server:8701/
+      SPRING_CONFIG_IMPORT: configserver:http://config-server:8888/
     deploy:
       resources:
         limits:
