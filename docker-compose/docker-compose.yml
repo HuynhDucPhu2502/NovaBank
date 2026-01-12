@@ -72,9 +72,35 @@ services:
       retries: 10
       timeout: 5s
       interval: 10s
+    environment:
+      SPRING_APPLICATION_NAME: config-server
     extends:
       file: common-config.yml
       service: microservice-base-config
+
+  # ================================================================================
+  #  EUREKA SERVER
+  # ================================================================================
+  
+  eureka-server:
+    image: huynhducphu2502/eureka-server
+    container_name: eureka-server-ms
+    ports:
+      - "8761:8761"
+    depends_on:
+      config-server:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent localhost:8761/actuator/health/readiness | grep UP || exit 1"
+      start_period: 10s
+      retries: 10
+      timeout: 5s
+      interval: 10s
+    environment:
+      SPRING_APPLICATION_NAME: eureka-server
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
 
   # ================================================================================
   #  SERVICES
@@ -89,6 +115,8 @@ services:
       config-server:
         condition: service_healthy
       account-db:
+        condition: service_healthy
+      eureka-server:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: account-service
@@ -107,6 +135,8 @@ services:
         condition: service_healthy
       card-db:
         condition: service_healthy
+      eureka-server:
+        condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: card-service
       SPRING_DATASOURCE_URL: jdbc:postgresql://card-db:5432/carddb
@@ -123,6 +153,8 @@ services:
       config-server:
         condition: service_healthy
       loan-db:
+        condition: service_healthy
+      eureka-server:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: loan-service

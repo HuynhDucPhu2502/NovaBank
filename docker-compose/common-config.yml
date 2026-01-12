@@ -27,7 +27,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 700m
+          memory: 512m
     extends:
       service: network-deploy-service
 
@@ -37,6 +37,16 @@ services:
     deploy:
       resources:
         limits:
-          memory: 512m
+          memory: 700m
     extends:
       service: microservice-base-config
+
+  microservice-eureka-config:
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+    extends:
+      service: microservice-config-client
