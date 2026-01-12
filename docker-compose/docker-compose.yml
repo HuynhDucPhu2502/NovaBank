@@ -100,7 +100,7 @@ services:
       SPRING_APPLICATION_NAME: eureka-server
     extends:
       file: common-config.yml
-      service: microservice-eureka-config
+      service: microservice-eureka-server
 
   # ================================================================================
   #  SERVICES
