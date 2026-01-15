@@ -3,6 +3,7 @@ package me.huynhducphu.nova.account_service.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import me.huynhducphu.nova.account_service.entity.constants.AccountType;
 
 /**
  * Admin 12/26/2025

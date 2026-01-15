@@ -5,19 +5,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import me.huynhducphu.nova.account_service.entity.constants.AccountType;
+import me.huynhducphu.nova.account_service.entity.constants.LoanType;
 
 /**
  * Admin 12/26/2025
  *
  **/
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DefaultAccountResponse {
+public class DefaultLoanResponse {
 
-    AccountType accountType;
-    String branchAddress;
+    String email;
+
+    String loanNumber;
+    LoanType loanType;
+
+    Long totalLoan;
+    Long amountPaid;
+    Long outstandingAmount;
 
 }

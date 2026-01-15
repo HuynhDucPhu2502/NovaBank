@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import me.huynhducphu.nova.account_service.entity.AccountType;
+import me.huynhducphu.nova.account_service.entity.constants.AccountType;
 
 /**
  * Admin 12/26/2025
