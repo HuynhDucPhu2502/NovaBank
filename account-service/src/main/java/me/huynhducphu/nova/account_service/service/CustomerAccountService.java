@@ -13,7 +13,7 @@ public interface CustomerAccountService {
             CreateCustomerWithAccountRequest request
     );
 
-    DefaultCustomerResponse getCustomerWithAccount(String email);
+    DefaultCustomerResponse getCustomerDetails(String email);
 
     void updateCustomerWithAccount(
             UpdateCustomerWithAccountRequest request

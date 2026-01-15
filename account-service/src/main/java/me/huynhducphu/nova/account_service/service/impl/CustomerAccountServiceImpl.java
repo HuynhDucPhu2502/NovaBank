@@ -14,6 +14,8 @@ import me.huynhducphu.nova.account_service.mapper.AccountMapper;
 import me.huynhducphu.nova.account_service.mapper.CustomerMapper;
 import me.huynhducphu.nova.account_service.repository.AccountRepository;
 import me.huynhducphu.nova.account_service.repository.CustomerRepository;
+import me.huynhducphu.nova.account_service.service.client.CardClient;
+import me.huynhducphu.nova.account_service.service.client.LoanClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CustomerAccountServiceImpl implements me.huynhducphu.nova.account_service.service.CustomerAccountService {
+
+    // Client
+    CardClient cardClient;
+    LoanClient loanClient;
 
     // Repository
     AccountRepository accountRepository;
@@ -57,7 +63,7 @@ public class CustomerAccountServiceImpl implements me.huynhducphu.nova.account_s
     }
 
     @Override
-    public DefaultCustomerResponse getCustomerWithAccount(String email) {
+    public DefaultCustomerResponse getCustomerDetails(String email) {
 
         var existedCustomer = customerRepository
                 .findByEmail(email)
@@ -67,12 +73,30 @@ public class CustomerAccountServiceImpl implements me.huynhducphu.nova.account_s
                 .findByCustomerId(existedCustomer.getCustomerId())
                 .orElseThrow(() -> new CustomEntityNotFoundException("Tài khoản không tồn tại"));
 
-        var defaultCustomerResponse = customerMapper.toDefaultCustomerResponse(existedCustomer);
-        var defaultAccountResponse = accountMapper.toDefaultAccountResponse(existedAccount);
 
-        defaultCustomerResponse.setAccount(defaultAccountResponse);
+        var response = customerMapper.toDefaultCustomerResponse(existedCustomer);
+        response.setAccount(accountMapper.toDefaultAccountResponse(existedAccount));
 
-        return defaultCustomerResponse;
+        try {
+            var cardResponse = cardClient.getCard(email);
+            if (cardResponse != null && cardResponse.getBody() != null) {
+                response.setCard(cardResponse.getBody().getResult());
+            }
+        } catch (Exception e) {
+            response.setCard(null);
+        }
+
+        try {
+            var loanResponse = loanClient.getCard(email);
+            if (loanResponse != null && loanResponse.getBody() != null) {
+                response.setLoan(loanResponse.getBody().getResult());
+            }
+        } catch (Exception e) {
+            response.setLoan(null);
+        }
+
+
+        return response;
     }
 
     @Override

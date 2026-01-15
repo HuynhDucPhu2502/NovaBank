@@ -45,7 +45,7 @@ public class CustomerAccountController {
     public ResponseEntity<ApiResponse<DefaultCustomerResponse>> getCustomerWithAccount(
             @RequestParam String email
     ) {
-        var data = customerAccountService.getCustomerWithAccount(email);
+        var data = customerAccountService.getCustomerDetails(email);
         var response = ApiResponse
                 .<DefaultCustomerResponse>builder()
                 .result(data)

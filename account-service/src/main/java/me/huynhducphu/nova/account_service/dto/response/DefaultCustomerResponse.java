@@ -22,6 +22,9 @@ public class DefaultCustomerResponse {
     String mobileNumber;
 
     DefaultAccountResponse account;
+    DefaultCardResponse card;
+    DefaultLoanResponse loan;
+
 
 }
 
