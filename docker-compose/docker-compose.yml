@@ -118,6 +118,12 @@ services:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     environment:
       SPRING_APPLICATION_NAME: account-service
       SPRING_DATASOURCE_URL: jdbc:postgresql://account-db:5432/accountdb
@@ -137,6 +143,12 @@ services:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent localhost:8081/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     environment:
       SPRING_APPLICATION_NAME: card-service
       SPRING_DATASOURCE_URL: jdbc:postgresql://card-db:5432/carddb
@@ -156,12 +168,41 @@ services:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent localhost:8082/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     environment:
       SPRING_APPLICATION_NAME: loan-service
       SPRING_DATASOURCE_URL: jdbc:postgresql://loan-db:5432/loandb
     extends:
       file: common-config.yml
       service: microservice-config-client
+
+  # ================================================================================
+  #  GATEWAY SERVER
+  # ================================================================================
+
+  gateway-server:
+    image: huynhducphu2502/gateway-server
+    container_name: gateway-server-ms
+    ports:
+      - "8765:8765"
+    depends_on:
+      account-service:
+        condition: service_healthy
+      card-service:
+        condition: service_healthy
+      loan-service:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: gateway-server
+    extends:
+      file: common-config.yml
+      service: microservice-config-client
+
 
 networks:
   novabank-net:
