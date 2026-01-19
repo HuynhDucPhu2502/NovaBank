@@ -7,7 +7,7 @@ import me.huynhducphu.nova.card_service.advice.exception.CustomEntityNotFoundExc
 import me.huynhducphu.nova.card_service.advice.exception.ResourceAlreadyExistsException;
 import me.huynhducphu.nova.card_service.dto.request.CreateCardRequest;
 import me.huynhducphu.nova.card_service.dto.response.DefaultCardResponse;
-import me.huynhducphu.nova.card_service.entity.CardType;
+import me.huynhducphu.nova.card_service.entity.constants.CardType;
 import me.huynhducphu.nova.card_service.mapper.CardMapper;
 import me.huynhducphu.nova.card_service.repository.CardRepository;
 import org.springframework.stereotype.Service;

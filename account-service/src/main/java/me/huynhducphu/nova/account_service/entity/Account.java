@@ -3,6 +3,7 @@ package me.huynhducphu.nova.account_service.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import me.huynhducphu.nova.account_service.entity.base.BaseEntity;
 import me.huynhducphu.nova.account_service.entity.constants.AccountType;
 
 /**
@@ -15,7 +16,8 @@ import me.huynhducphu.nova.account_service.entity.constants.AccountType;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Account {
+@Builder
+public class Account extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

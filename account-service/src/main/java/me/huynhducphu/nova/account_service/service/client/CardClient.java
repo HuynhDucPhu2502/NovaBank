@@ -15,5 +15,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface CardClient {
 
     @GetMapping(value = "/api/cards", consumes = "application/json")
-    ResponseEntity<ApiResponse<DefaultCardResponse>> getCard(@RequestParam String email);
+    ApiResponse<DefaultCardResponse> getCard(@RequestParam String email);
 }

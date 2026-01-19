@@ -21,11 +21,6 @@ public class DefaultCustomerResponse {
     String email;
     String mobileNumber;
 
-    DefaultAccountResponse account;
-    DefaultCardResponse card;
-    DefaultLoanResponse loan;
-
-
 }
 
 

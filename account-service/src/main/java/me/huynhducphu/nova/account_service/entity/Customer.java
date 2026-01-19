@@ -1,11 +1,9 @@
 package me.huynhducphu.nova.account_service.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+import me.huynhducphu.nova.account_service.entity.base.BaseEntity;
 
 /**
  * Admin 12/26/2025
@@ -15,14 +13,14 @@ import lombok.experimental.FieldDefaults;
 @Table(
         name = "customers",
         indexes = {
-                @Index(name = "idx_customer_email", columnList = "email"),
-                @Index(name = "idx_customer_mobile", columnList = "mobile_number")
+                @Index(name = "idx_customer_email", columnList = "email")
         }
 )
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class Customer extends BaseEntity {
 
     @Id
@@ -35,6 +33,6 @@ public class Customer extends BaseEntity {
     @Column(unique = true, nullable = false)
     String email;
 
-    @Column(name = "mobile_number", unique = true, nullable = false)
+    @Column(name = "mobile_number", nullable = false)
     String mobileNumber;
 }

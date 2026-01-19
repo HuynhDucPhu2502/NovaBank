@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import me.huynhducphu.nova.card_service.entity.base.BaseEntity;
+import me.huynhducphu.nova.card_service.entity.constants.CardType;
 
 /**
  * Admin 12/26/2025

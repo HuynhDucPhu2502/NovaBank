@@ -1,4 +1,4 @@
-package me.huynhducphu.nova.account_service.entity;
+package me.huynhducphu.nova.account_service.entity.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
