@@ -1,9 +1,9 @@
 package me.huynhducphu.nova.account_service.service.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import me.huynhducphu.nova.account_service.advice.exception.CustomEntityNotFoundException;
 import me.huynhducphu.nova.account_service.advice.exception.ResourceAlreadyExistsException;
 import me.huynhducphu.nova.account_service.dto.request.CreateCustomerRequest;
 import me.huynhducphu.nova.account_service.dto.response.DefaultCustomerResponse;
@@ -58,7 +58,7 @@ public class CustomerServiceImpl implements CustomerService {
     public void toggleCustomer(String email, Boolean enabled) {
         var customer = customerRepository
                 .findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy khách hàng"));
+                .orElseThrow(() -> new CustomEntityNotFoundException("Không tìm thấy khách hàng"));
 
         customer.setActive(enabled);
         customerRepository.save(customer);
@@ -69,7 +69,7 @@ public class CustomerServiceImpl implements CustomerService {
     public DefaultCustomerResponse getCustomerDetails(String email) {
         var customer = customerRepository
                 .findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy khách hàng"));
+                .orElseThrow(() -> new CustomEntityNotFoundException("Không tìm thấy khách hàng"));
 
         return customerMapper.toDefaultCustomerResponse(customer);
     }

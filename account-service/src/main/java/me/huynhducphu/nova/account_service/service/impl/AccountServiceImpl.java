@@ -1,9 +1,9 @@
 package me.huynhducphu.nova.account_service.service.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import me.huynhducphu.nova.account_service.advice.exception.CustomEntityNotFoundException;
 import me.huynhducphu.nova.account_service.dto.request.CreateAccountRequest;
 import me.huynhducphu.nova.account_service.dto.response.DefaultAccountResponse;
 import me.huynhducphu.nova.account_service.entity.Account;
@@ -39,8 +39,8 @@ public class AccountServiceImpl implements AccountService {
 
         var customer = customerRepository
                 .findByEmail(request.getEmail())
-                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy khách hàng"));
-        
+                .orElseThrow(() -> new CustomEntityNotFoundException("Không tìm thấy khách hàng"));
+
         var account = Account
                 .builder()
                 .customerId(customer.getCustomerId())
@@ -57,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
     public void toggleAccount(Long accountNumber, boolean enabled) {
         var account = accountRepository
                 .findByAccountNumber(accountNumber)
-                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy tài khoản"));
+                .orElseThrow(() -> new CustomEntityNotFoundException("Không tìm thấy tài khoản"));
 
         account.setActive(enabled);
         accountRepository.save(account);
@@ -68,7 +68,7 @@ public class AccountServiceImpl implements AccountService {
     public DefaultAccountResponse getAccountDetails(Long accountNumber) {
         var account = accountRepository
                 .findByAccountNumber(accountNumber)
-                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy tài khoản"));
+                .orElseThrow(() -> new CustomEntityNotFoundException("Không tìm thấy tài khoản"));
 
         return accountMapper.toDefaultAccountResponse(account);
     }
