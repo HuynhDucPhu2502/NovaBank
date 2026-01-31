@@ -31,16 +31,10 @@ services:
     extends:
       service: network-deploy-service
 
-  microservice-eureka-server:
-    environment:
-      SPRING_CONFIG_IMPORT: configserver:http://config-server:8888/
-    extends:
-      service: microservice-base-config
-
   microservice-config-client:
     environment:
-      SPRING_CONFIG_IMPORT: configserver:http://config-server:8888/
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_CONFIG_IMPORT: configserver:http://infra-server:8888/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://infra-server:8761/eureka/
     deploy:
       resources:
         limits:

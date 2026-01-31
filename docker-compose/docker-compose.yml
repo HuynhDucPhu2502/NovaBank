@@ -58,9 +58,9 @@ services:
   #  CONFIG SERVER
   # ================================================================================
 
-  config-server:
-    image: huynhducphu2502/config-server
-    container_name: config-server-ms
+  infra-server:
+    image: huynhducphu2502/infra-server
+    container_name: infra-server-ms
     ports:
       - "8888:8888"
     depends_on:
@@ -73,34 +73,10 @@ services:
       timeout: 5s
       interval: 10s
     environment:
-      SPRING_APPLICATION_NAME: config-server
+      SPRING_APPLICATION_NAME: infra-server
     extends:
       file: common-config.yml
       service: microservice-base-config
-
-  # ================================================================================
-  #  EUREKA SERVER
-  # ================================================================================
-  
-  eureka-server:
-    image: huynhducphu2502/eureka-server
-    container_name: eureka-server-ms
-    ports:
-      - "8761:8761"
-    depends_on:
-      config-server:
-        condition: service_healthy
-    healthcheck:
-      test: "curl --fail --silent localhost:8761/actuator/health/readiness | grep UP || exit 1"
-      start_period: 10s
-      retries: 10
-      timeout: 5s
-      interval: 10s
-    environment:
-      SPRING_APPLICATION_NAME: eureka-server
-    extends:
-      file: common-config.yml
-      service: microservice-eureka-server
 
   # ================================================================================
   #  SERVICES
@@ -112,11 +88,9 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      config-server:
-        condition: service_healthy
       account-db:
         condition: service_healthy
-      eureka-server:
+      infra-server:
         condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
@@ -137,11 +111,9 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      config-server:
-        condition: service_healthy
       card-db:
         condition: service_healthy
-      eureka-server:
+      infra-server:
         condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8081/actuator/health/readiness | grep UP || exit 1"
@@ -162,11 +134,9 @@ services:
     ports:
       - "8082:8082"
     depends_on:
-      config-server:
-        condition: service_healthy
       loan-db:
         condition: service_healthy
-      eureka-server:
+      infra-server:
         condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8082/actuator/health/readiness | grep UP || exit 1"
