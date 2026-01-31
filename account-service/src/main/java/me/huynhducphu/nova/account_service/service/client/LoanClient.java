@@ -16,5 +16,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface LoanClient {
 
     @GetMapping(value = "/api/loans", consumes = "application/json")
-    ApiResponse<DefaultLoanResponse> getCard(@RequestParam String email);
+    ApiResponse<DefaultLoanResponse> getLoan(@RequestParam String email);
 }

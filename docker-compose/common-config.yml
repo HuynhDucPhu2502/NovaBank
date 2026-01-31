@@ -34,7 +34,7 @@ services:
   microservice-config-client:
     environment:
       SPRING_CONFIG_IMPORT: configserver:http://infra-server:8888/
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://infra-server:8761/eureka/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://infra-server:8888/eureka/
     deploy:
       resources:
         limits:

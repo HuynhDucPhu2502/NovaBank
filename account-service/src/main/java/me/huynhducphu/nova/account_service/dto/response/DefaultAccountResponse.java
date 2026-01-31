@@ -20,4 +20,7 @@ public class DefaultAccountResponse {
     AccountType accountType;
     String branchAddress;
 
+    DefaultCardResponse card;
+    DefaultLoanResponse loan;
+
 }
