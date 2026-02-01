@@ -19,7 +19,11 @@ public class GatewayServerApplication {
     }
 
     @Bean
-    public RouteLocator routeLocator(RouteLocatorBuilder routeLocatorBuilder) {
+    public RouteLocator routeLocator(
+            RouteLocatorBuilder routeLocatorBuilder,
+            RedisRateLimiter redisRateLimiter,
+            KeyResolver keyResolver
+    ) {
         return routeLocatorBuilder.routes()
 
                 // ACCOUNT SERVICE
@@ -28,8 +32,8 @@ public class GatewayServerApplication {
                         .filters(f -> f
                                 .rewritePath("/novabank/account-service/(?<segment>.*)", "/${segment}")
                                 .requestRateLimiter(config -> config
-                                        .setRateLimiter(redisRateLimiter())
-                                        .setKeyResolver(userKeyResolver())
+                                        .setRateLimiter(redisRateLimiter)
+                                        .setKeyResolver(keyResolver)
                                 )
                                 .circuitBreaker(c -> c
                                         .setName("accountCB")
@@ -44,8 +48,8 @@ public class GatewayServerApplication {
                         .filters(f -> f
                                 .rewritePath("/novabank/loan-service/(?<segment>.*)", "/${segment}")
                                 .requestRateLimiter(config -> config
-                                        .setRateLimiter(redisRateLimiter())
-                                        .setKeyResolver(userKeyResolver())
+                                        .setRateLimiter(redisRateLimiter)
+                                        .setKeyResolver(keyResolver)
                                 )
                                 .circuitBreaker(c -> c
                                         .setName("loanCB")
@@ -60,8 +64,8 @@ public class GatewayServerApplication {
                         .filters(f -> f
                                 .rewritePath("/novabank/card-service/(?<segment>.*)", "/${segment}")
                                 .requestRateLimiter(config -> config
-                                        .setRateLimiter(redisRateLimiter())
-                                        .setKeyResolver(userKeyResolver())
+                                        .setRateLimiter(redisRateLimiter)
+                                        .setKeyResolver(keyResolver)
                                 )
                                 .circuitBreaker(c -> c
                                         .setName("cardCB")
@@ -69,23 +73,8 @@ public class GatewayServerApplication {
                                 )
                         )
                         .uri("lb://CARD-SERVICE"))
-
-
+                
                 .build();
-    }
-
-    @Bean
-    public RedisRateLimiter redisRateLimiter() {
-        return new RedisRateLimiter(20, 40);
-    }
-
-    @Bean
-    public KeyResolver userKeyResolver() {
-        return exchange -> Mono
-                .just(Objects.requireNonNull(exchange.getRequest().getRemoteAddress())
-                        .getAddress()
-                        .getHostAddress()
-                );
     }
 
 }
