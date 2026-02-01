@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GlobalFallbackController {
 
-//    @GetMapping("/fallback/global-error")
-//    public ResponseEntity<@NonNull String> globalError() {
-//        return ResponseEntity
-//                .status(HttpStatus.SERVICE_UNAVAILABLE)
-//                .body("Hệ thống đang bận, vui lòng thử lại sau.");
-//    }
+    @GetMapping("/fallback/global-error")
+    public ResponseEntity<@NonNull String> globalError() {
+        return ResponseEntity
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body("Hệ thống đang bận, vui lòng thử lại sau.");
+    }
 
 }
