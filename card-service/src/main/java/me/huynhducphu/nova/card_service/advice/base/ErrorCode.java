@@ -15,6 +15,7 @@ public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(9999, "Lỗi không xác định", HttpStatus.INTERNAL_SERVER_ERROR),
     METHOD_NOT_ALLOWED(1001, "Phương thức HTTP không được hỗ trợ", HttpStatus.METHOD_NOT_ALLOWED),
     INVALID_KEY(1002, "Cú pháp không hợp lệ", HttpStatus.BAD_REQUEST),
+    SERVICE_UNAVAILABLE(1003, "Hệ thống đang bận", HttpStatus.SERVICE_UNAVAILABLE),
 
     // ===== Authentication / Authorization ===== 1200 - 1300
     UNAUTHENTICATED(12010, "Chưa xác thực", HttpStatus.UNAUTHORIZED),

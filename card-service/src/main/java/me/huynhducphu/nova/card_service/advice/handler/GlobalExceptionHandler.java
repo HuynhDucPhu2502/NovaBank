@@ -1,5 +1,6 @@
 package me.huynhducphu.nova.card_service.advice.handler;
 
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import lombok.extern.slf4j.Slf4j;
 
 import me.huynhducphu.nova.card_service.advice.base.ErrorCode;
@@ -130,6 +131,42 @@ public class GlobalExceptionHandler {
                 .body(apiResponse);
     }
 
+    @ExceptionHandler(value = CallNotPermittedException.class)
+    ResponseEntity<ApiResponse<Void>> handleCallNotPermittedException(CallNotPermittedException ex) {
+        var error = ErrorCode.SERVICE_UNAVAILABLE;
+
+        ApiResponse<Void> apiResponse = new ApiResponse<>();
+        apiResponse.setCode(error.getCode());
+        apiResponse.setMessage(error.getMessage());
+
+        return ResponseEntity
+                .status(error.getStatusCode())
+                .body(apiResponse);
+    }
+
+    @ExceptionHandler(value = RuntimeException.class)
+    ResponseEntity<ApiResponse<Void>> handleRuntimeException(RuntimeException ex) {
+        ApiResponse<Void> apiResponse = new ApiResponse<>();
+
+        if ("IGNORE_ME".equals(ex.getMessage())) {
+            var error = ErrorCode.ENTITY_NOT_FOUND;
+            apiResponse.setCode(error.getCode());
+            apiResponse.setMessage("Yêu cầu không hợp lệ hoặc dữ liệu không tồn tại");
+
+            return ResponseEntity
+                    .status(error.getStatusCode())
+                    .body(apiResponse);
+        }
+
+        var error = ErrorCode.UNCATEGORIZED_EXCEPTION;
+        apiResponse.setCode(error.getCode());
+        apiResponse.setMessage(error.getMessage());
+
+        return ResponseEntity
+                .status(error.getStatusCode())
+                .body(apiResponse);
+    }
+
     @ExceptionHandler(value = Exception.class)
     ResponseEntity<ApiResponse<Void>> handleException() {
         var error = ErrorCode.UNCATEGORIZED_EXCEPTION;
@@ -142,5 +179,6 @@ public class GlobalExceptionHandler {
                 .status(error.getStatusCode())
                 .body(apiResponse);
     }
+
 
 }
