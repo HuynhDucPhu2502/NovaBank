@@ -9,6 +9,7 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Objects;
 
 @SpringBootApplication
@@ -35,6 +36,11 @@ public class GatewayServerApplication {
                                         .setRateLimiter(redisRateLimiter)
                                         .setKeyResolver(keyResolver)
                                 )
+                                .retry(config -> config
+                                        .setRetries(2)
+                                        .setMethods(org.springframework.http.HttpMethod.GET)
+                                        .setBackoff(Duration.ofMillis(100), Duration.ofMillis(500), 2, true)
+                                )
                                 .circuitBreaker(c -> c
                                         .setName("accountCB")
                                         .setFallbackUri("forward:/fallback/global-error")
@@ -50,6 +56,11 @@ public class GatewayServerApplication {
                                 .requestRateLimiter(config -> config
                                         .setRateLimiter(redisRateLimiter)
                                         .setKeyResolver(keyResolver)
+                                )
+                                .retry(config -> config
+                                        .setRetries(2)
+                                        .setMethods(org.springframework.http.HttpMethod.GET)
+                                        .setBackoff(Duration.ofMillis(100), Duration.ofMillis(500), 2, true)
                                 )
                                 .circuitBreaker(c -> c
                                         .setName("loanCB")
@@ -67,13 +78,18 @@ public class GatewayServerApplication {
                                         .setRateLimiter(redisRateLimiter)
                                         .setKeyResolver(keyResolver)
                                 )
+                                .retry(config -> config
+                                        .setRetries(2)
+                                        .setMethods(org.springframework.http.HttpMethod.GET)
+                                        .setBackoff(Duration.ofMillis(100), Duration.ofMillis(500), 2, true)
+                                )
                                 .circuitBreaker(c -> c
                                         .setName("cardCB")
                                         .setFallbackUri("forward:/fallback/global-error")
                                 )
                         )
                         .uri("lb://CARD-SERVICE"))
-                
+
                 .build();
     }
 

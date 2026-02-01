@@ -10,6 +10,8 @@ services:
       - "5433:5432"
     environment:
       POSTGRES_DB: accountdb
+    volumes:
+      - account-data:/var/lib/postgresql/data
     extends:
       file: common-config.yml
       service: common-db-config
@@ -20,6 +22,8 @@ services:
       - "5434:5432"
     environment:
       POSTGRES_DB: carddb
+    volumes:
+      - card-data:/var/lib/postgresql/data
     extends:
       file: common-config.yml
       service: common-db-config
@@ -30,6 +34,8 @@ services:
       - "5435:5432"
     environment:
       POSTGRES_DB: loandb
+    volumes:
+      - loan-data:/var/lib/postgresql/data
     extends:
       file: common-config.yml
       service: common-db-config
