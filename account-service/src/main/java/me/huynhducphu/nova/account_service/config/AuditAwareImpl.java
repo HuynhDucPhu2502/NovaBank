@@ -1,4 +1,4 @@
-package me.huynhducphu.nova.account_service.config.audit;
+package me.huynhducphu.nova.account_service.config;
 
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.lang.NonNull;

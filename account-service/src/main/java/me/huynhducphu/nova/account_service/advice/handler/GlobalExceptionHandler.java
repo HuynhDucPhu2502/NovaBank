@@ -1,5 +1,6 @@
 package me.huynhducphu.nova.account_service.advice.handler;
 
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import lombok.extern.slf4j.Slf4j;
 import me.huynhducphu.nova.account_service.advice.base.ErrorCode;
 import me.huynhducphu.nova.account_service.advice.exception.CustomDataIntegrityViolationException;
@@ -123,6 +124,42 @@ public class GlobalExceptionHandler {
         ApiResponse<Void> apiResponse = new ApiResponse<>();
         apiResponse.setCode(error.getCode());
         apiResponse.setMessage(message);
+
+        return ResponseEntity
+                .status(error.getStatusCode())
+                .body(apiResponse);
+    }
+
+    @ExceptionHandler(value = CallNotPermittedException.class)
+    ResponseEntity<ApiResponse<Void>> handleCallNotPermittedException() {
+        var error = ErrorCode.SERVICE_UNAVAILABLE;
+
+        ApiResponse<Void> apiResponse = new ApiResponse<>();
+        apiResponse.setCode(error.getCode());
+        apiResponse.setMessage(error.getMessage());
+
+        return ResponseEntity
+                .status(error.getStatusCode())
+                .body(apiResponse);
+    }
+
+    @ExceptionHandler(value = RuntimeException.class)
+    ResponseEntity<ApiResponse<Void>> handleRuntimeException(RuntimeException ex) {
+        ApiResponse<Void> apiResponse = new ApiResponse<>();
+
+        if ("IGNORE_ME".equals(ex.getMessage())) {
+            var error = ErrorCode.ENTITY_NOT_FOUND;
+            apiResponse.setCode(error.getCode());
+            apiResponse.setMessage("Yêu cầu không hợp lệ hoặc dữ liệu không tồn tại");
+
+            return ResponseEntity
+                    .status(error.getStatusCode())
+                    .body(apiResponse);
+        }
+
+        var error = ErrorCode.UNCATEGORIZED_EXCEPTION;
+        apiResponse.setCode(error.getCode());
+        apiResponse.setMessage(error.getMessage());
 
         return ResponseEntity
                 .status(error.getStatusCode())

@@ -132,7 +132,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = CallNotPermittedException.class)
-    ResponseEntity<ApiResponse<Void>> handleCallNotPermittedException(CallNotPermittedException ex) {
+    ResponseEntity<ApiResponse<Void>> handleCallNotPermittedException() {
         var error = ErrorCode.SERVICE_UNAVAILABLE;
 
         ApiResponse<Void> apiResponse = new ApiResponse<>();
